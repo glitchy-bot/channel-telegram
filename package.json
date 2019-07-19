@@ -1,0 +1,31 @@
+{
+  "name": "glitchy-channel-telegram",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "await": "await-url",
+    "build": "tsc -p tsconfig.json",
+    "now:dev": "now dev",
+    "now:deploy": "now deploy",
+    "now:clean": "now remove --yes --safe"
+  },
+  "author": "Caian R. Ertl",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@now/node": "^0.12.0",
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
+    "await-url": "^0.3.0",
+    "eslint": "^5.12.1",
+    "now": "^15.8.3",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}

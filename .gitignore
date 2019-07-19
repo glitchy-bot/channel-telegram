@@ -1,0 +1,5 @@
+# node.js dependencies folder
+node_modules/*
+
+# Generated JS code
+dist/

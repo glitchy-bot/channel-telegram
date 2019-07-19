@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "name": "broker",
+    "builds": [
+        { "src": "./src/**/*.ts", "use": "@now/node@canary" }
+    ],
+    "routes": [
+        { "src": "/message", "dest": "src/api/message" },
+        { "src": "/return", "dest": "src/api/return" }
+    ]
+}
