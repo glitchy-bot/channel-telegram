@@ -8,7 +8,7 @@ export default async function(req: NowRequest, res: NowResponse): Promise<void>
     const token: string = process.env.TELEGRAM_TOKEN || '';
     const client = new TelegramClient(token);
 
-    const ownerId: string = process.env.TELEGRAM_OWNER_ID || '';
+    const ownerId: number = Number(process.env.TELEGRAM_OWNER_ID) || 0;
 
     const event = req.body;
     const message = event.message;
