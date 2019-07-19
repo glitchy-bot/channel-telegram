@@ -1,15 +1,4 @@
-import axios from 'axios';
-
-
-interface RequestPayload
-{
-    url: string;
-    baseURL?: string;
-    method: string;
-    headers: object;
-    data?: Message;
-    params?: Message;
-}
+import { HttpResponse, HttpRequest } from './request';
 
 
 interface Message
@@ -20,65 +9,22 @@ interface Message
     caption?: string;
 }
 
-
 interface AnimationMessage extends Message
 {
     animation: string;
 }
 
-
-export interface Response
+export class TelegramClient extends HttpRequest
 {
-    error: boolean;
-    response: object;
-}
-
-
-async function _request(payload: RequestPayload): Promise<Response>
-{
-    try {
-        const res: Response = { error: false, response: await axios(payload) }
-        return res;
-    }
-    catch (err) {
-        const res: Response = { error: true, response: err }
-        return res;
-    }
-}
-
-
-export class TelegramClient
-{
-    private token: string;
-    private baseURL: string;
-    private headers: object;
+    private url: string;
 
     public constructor(token: string)
     {
-        this.token = `bot${token}`;
-        this.baseURL = 'https://api.telegram.org';
-        this.headers = {
-            'content-type': 'application/json',
-        };
+        super();
+        this.url = `https://api.telegram.org/bot${token}`;
     }
 
-    private async perform(url: string, content: Message, method: string = 'post'): Promise<Response>
-    {
-        url = `${this.baseURL}/${this.token}/${url}`;
-
-        const payload: RequestPayload = { url, method, headers: this.headers }
-
-        if (content) {
-            if (method === 'get')
-                payload.data = content;
-            else
-                payload.params = content;
-        }
-
-        return await _request(payload);
-    }
-
-    public async sendAnimation(chatId: number, imageUrl: string, msgId?: number, caption?: string): Promise<Response>
+    public async sendAnimation(chatId: number, imageUrl: string, msgId?: number, caption?: string): Promise<HttpResponse>
     {
         /* eslint-disable @typescript-eslint/camelcase */
         const msg: AnimationMessage = {
@@ -96,6 +42,6 @@ export class TelegramClient
         }
         /* eslint-enable */
 
-        return await this.perform('sendAnimation', msg);
+        return await this.request(`${this.url}/sendAnimation`, msg);
     }
 }
