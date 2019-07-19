@@ -1,0 +1,22 @@
+parameters:
+  # the used version of the nodejs runtime
+  nodeJsVersion: '10.x'
+
+  # should only production nodejs modules be installed?
+  # possible options: 'true', 'false'
+  onlyProduction: 'false'
+
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: ${{ parameters.nodeJsVersion }}
+    displayName: Install NodeJS
+
+  - ${{ if eq(parameters.onlyProduction, 'true') }}:
+    - script: npm install --only=production
+      displayName: Install production modules
+
+  - ${{ if eq(parameters.onlyProduction, 'false') }}:
+    - script: npm install
+      displayName: Install modules

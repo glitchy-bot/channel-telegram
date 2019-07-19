@@ -1,0 +1,38 @@
+parameters:
+  # ...
+  token: ''
+
+  # ...
+  deploymentName: ''
+
+  # ...
+  telegramToken: ''
+
+  # ...
+  telegramOwnerId: ''
+
+
+steps:
+  - script: |
+      # ...
+      DEPLOYMENT_URL="$(npm run now:deploy -- \
+          -e TELEGRAM_TOKEN="$TELEGRAM_TOKEN" \
+          -e TELEGRAM_OWNER_ID="$TELEGRAM_OWNER_ID" \
+          --token="$ZEIT_TOKEN")"
+
+      # ...
+      npm run await -- --tries 10 --interval 2000 "$(echo "$DEPLOYMENT_URL" | tail -n 1)"
+    env:
+      ZEIT_TOKEN: ${{ parameters.token }}
+      ZEIT_DEPLOYMENT_NAME: ${{ parameters.deploymentName }}
+      TELEGRAM_TOKEN: ${{ parameters.telegramToken }}
+      TELEGRAM_OWNER_ID: ${{ parameters.telegramOwnerId }}
+    displayName: Deploy on Zeit
+
+  - script: |
+      # ...
+      npm run now:clean -- "$ZEIT_DEPLOYMENT_NAME" --token="$ZEIT_TOKEN"
+    env:
+      ZEIT_TOKEN: ${{ parameters.token }}
+      ZEIT_DEPLOYMENT_NAME: ${{ parameters.deploymentName }}
+    displayName: Clean older deployments

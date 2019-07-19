@@ -1,0 +1,26 @@
+variables:
+  vmImageName: 'ubuntu-latest'
+
+
+trigger:
+  branches:
+    include:
+      - master
+
+  tags:
+    include:
+      - v*
+
+
+jobs:
+  - job: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - template: .ci/templates/node-with-modules.yml
+      - template: .ci/templates/zeit-now-deploy.yml
+        parameters:
+          token: $(zeitToken)
+          deploymentName: $(zeitDeploymentName)
+          telegramToken: $(telegramToken)
+          telegramOwnerId: $(telegramOwnerId)
